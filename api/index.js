@@ -12,7 +12,7 @@ dotenv.config();
 app.use(express.json());
 
 mongoose
-  .connect(process.env.COSMOS_URL)
+  .connect(process.env.MONGO_URI)
   .then(console.log("Connected to Mongo DB"))
   .catch((err) => console.log(err));
 
