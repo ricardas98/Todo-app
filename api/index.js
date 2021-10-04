@@ -21,6 +21,8 @@ app.use("/api/categories", categoryRoute);
 app.use("/api/comments", commentRoute);
 app.use("/api/tasks", taskRoute);
 
-app.listen("5000", () => {
+const port = process.env.PORT || 5000;
+
+app.listen(port, () => {
   console.log("Backend running");
 });
