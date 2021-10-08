@@ -2,23 +2,46 @@ const router = require("express").Router();
 
 const Task = require("../models/Task");
 const Comment = require("../models/Comment");
+const User = require("../models/User");
 
 async function taskExists(id) {
   return (await Task.findById(id)) ? true : false;
 }
 
-//CREATE
-router.post("/", async (req, res) => {
-  try {
-    const newTask = Task({
-      name: req.body.name,
-      userId: req.body.userId,
-      date: req.body.date,
-      categories: req.body.categories,
-    });
+async function userExists(username) {
+  console.log((await User.findOne({ username })) ? true : false);
+  return (await User.findOne({ username })) ? true : false;
+}
 
-    const task = await newTask.save();
-    res.status(200).json(task);
+//CREATE
+router.post("/users/:username/tasks", async (req, res) => {
+  try {
+    if (await userExists(req.params.username)) {
+      try {
+        const user = await User.findOne(
+          {
+            username: req.params.username,
+          },
+          "userId"
+        );
+        console.log(user.id);
+
+        const newTask = Task({
+          name: req.body.name,
+          userId: user.id,
+          date: req.body.date,
+          categories: req.body.categories,
+        });
+
+        const task = await newTask.save();
+
+        res.status(201).json(task);
+      } catch (err) {
+        res.status(500).json(err);
+      }
+    } else {
+      res.status(404).json("User not found.");
+    }
   } catch (err) {
     res.status(500).json(err);
   }
@@ -49,14 +72,22 @@ router.put("/:id", async (req, res) => {
 });
 
 //DELETE
-router.delete("/:id", async (req, res) => {
+router.delete("/users/:username/tasks/:id", async (req, res) => {
   try {
-    if (await taskExists(req.params.id)) {
-      await Task.findByIdAndDelete(req.params.id);
-      await Comment.deleteMany({ taskId: req.params.id });
-      res.status(200).json("Task has been deleted.");
+    if (await userExists(req.params.username)) {
+      try {
+        if (await taskExists(req.params.id)) {
+          await Task.findByIdAndDelete(req.params.id);
+          await Comment.deleteMany({ taskId: req.params.id });
+          res.status(200).json("Task has been deleted.");
+        } else {
+          res.status(404).json("Task not found.");
+        }
+      } catch (err) {
+        res.status(500).json(err);
+      }
     } else {
-      res.status(404).json("Task not found.");
+      res.status(404).json("User not found.");
     }
   } catch (err) {
     res.status(500).json(err);
@@ -64,7 +95,7 @@ router.delete("/:id", async (req, res) => {
 });
 
 //GET
-router.get("/:id", async (req, res) => {
+router.get("/users/:username/tasks/:id", async (req, res) => {
   try {
     if (await taskExists(req.params.id)) {
       const task = await Task.findById(req.params.id);

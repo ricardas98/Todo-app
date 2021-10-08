@@ -19,7 +19,7 @@ mongoose
 app.use("/api/users", userRoute);
 app.use("/api/categories", categoryRoute);
 app.use("/api/comments", commentRoute);
-app.use("/api/tasks", taskRoute);
+app.use("/api", taskRoute);
 
 const port = process.env.PORT || 5000;
 
