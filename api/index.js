@@ -12,17 +12,17 @@ dotenv.config();
 app.use(express.json());
 
 mongoose
-  .connect(process.env.MONGO_URI)
-  .then(console.log("Connected to Mongo DB"))
-  .catch((err) => console.log(err));
+	.connect(process.env.MONGO_URI)
+	.then(console.log("Connected to Mongo DB"))
+	.catch((err) => console.log(err));
 
 app.use("/api/users", userRoute);
-app.use("/api/categories", categoryRoute);
+app.use("/api", categoryRoute);
 app.use("/api/comments", commentRoute);
 app.use("/api", taskRoute);
 
 const port = process.env.PORT || 5000;
 
 app.listen(port, () => {
-  console.log("Backend running on port " + port);
+	console.log("Backend running on port " + port);
 });
