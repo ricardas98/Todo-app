@@ -8,7 +8,8 @@ const TaskSchema = new mongoose.Schema(
     },
     date: {
       type: Date,
-      required: true,
+      required: false,
+      default: Date.now(),
     },
     categories: {
       type: Array,

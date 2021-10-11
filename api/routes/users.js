@@ -10,6 +10,12 @@ async function userExists(username) {
   return (await User.findOne({ username })) ? true : false;
 }
 
+async function userExists(username, email) {
+  return (await User.findOne({ username } || (await User.findOne({ email }))))
+    ? true
+    : false;
+}
+
 //CREATE
 router.post("/", async (req, res) => {
   try {
@@ -25,7 +31,7 @@ router.post("/", async (req, res) => {
     const user = await newUser.save();
     res.status(201).json(user);
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ Error: err.message });
   }
 });
 
@@ -47,14 +53,14 @@ router.put("/:username", async (req, res) => {
           { new: true }
         );
         res.status(200).json(updatedUser);
-      } catch {
-        res.status(500).json(err);
+      } catch (err) {
+        res.status(500).json({ Error: err.message });
       }
     } else {
-      res.status(404).json("User not found.");
+      res.status(404).json({ Error: "User not found." });
     }
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ Error: err.message });
   }
 });
 
@@ -64,15 +70,15 @@ router.delete("/:username", async (req, res) => {
     if (await userExists(req.params.username)) {
       const user = await User.findOne({ username: req.params.username });
       await user.delete();
-      await Category.deleteMany({ username: req.params.username });
-      await Task.deleteMany({ username: req.params.username });
-      await Comment.deleteMany({ username: req.params.username });
+      await Category.deleteMany({ userId: user._id });
+      await Task.deleteMany({ userId: user._id });
+      await Comment.deleteMany({ userId: user._id });
       res.status(200).json("User has been deleted.");
     } else {
-      res.status(404).json("User not found.");
+      res.status(404).json({ Error: "User not found." });
     }
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ Error: err.message });
   }
 });
 
@@ -83,10 +89,10 @@ router.get("/:username", async (req, res) => {
       const user = await User.findOne({ username: req.params.username });
       res.status(200).json(user);
     } else {
-      res.status(404).json("User not found.");
+      res.status(404).json({ Error: "User not found." });
     }
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ Error: err.message });
   }
 });
 
@@ -97,7 +103,7 @@ router.get("/", async (req, res) => {
     if (users.length === 0) res.status(404).json("No users found.");
     else res.status(200).json(users);
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({ Error: err.message });
   }
 });
 
