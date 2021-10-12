@@ -123,7 +123,7 @@ router.get("/users/:username/tasks/:id", async (req, res) => {
             await getUserIdByUsername(req.params.username)
           )
         ) {
-          const task = await Task.findByID({ _id: req.params.id });
+          const task = await Task.findById({ _id: req.params.id });
           res.status(200).json(task);
         } else {
           res.status(404).json({ Error: "Task not found." });

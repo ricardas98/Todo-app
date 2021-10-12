@@ -4,169 +4,171 @@ const Category = require("../models/Category");
 const Task = require("../models/Task");
 const User = require("../models/User");
 
+async function userExists(username) {
+  return (await User.findOne({ username })) ? true : false;
+}
+
 async function categoryExists(id) {
-	return (await Category.findById(id)) ? true : false;
+  return (await Category.findById(id)) ? true : false;
+}
+
+async function categoryOwnedByUser(categoryId, userId) {
+  const category = await Category.findOne({
+    _id: categoryId,
+    userId: userId,
+  });
+  return category ? true : false;
+}
+
+async function getUserIdByUsername(username) {
+  const user = await User.findOne(
+    {
+      username: username,
+    },
+    "userId"
+  );
+  return user.id;
 }
 
 //CREATE
-router.post("/", async (req, res) => {
-	try {
-		const newCategory = Category({
-			name: req.body.name,
-			userId: req.body.userId,
-		});
+router.post("/users/:username/categories", async (req, res) => {
+  try {
+    if (await userExists(req.params.username)) {
+      const newCategory = Category({
+        name: req.body.name,
+        userId: await getUserIdByUsername(req.params.username),
+      });
+      const category = await newCategory.save();
 
-		const category = await newCategory.save();
-		res.status(200).json(category);
-	} catch (err) {
-		res.status(500).json(err);
-	}
+      res.status(201).json(category);
+    } else {
+      res.status(404).json({ Error: "User not found." });
+    }
+  } catch (err) {
+    res.status(500).json({ Error: err.message });
+  }
 });
 
 //UPDATE
-router.put("/:id", async (req, res) => {
-	try {
-		if (await categoryExists(req.params.id)) {
-			try {
-				const updatedCategory = await Category.findByIdAndUpdate(
-					req.params.id,
-					{
-						$set: req.body,
-					},
-					{ new: true }
-				);
-				res.status(200).json(updatedCategory);
-			} catch {
-				res.status(500).json(err);
-			}
-		} else {
-			res.status(404).json("Category not found.");
-		}
-	} catch (err) {
-		res.status(500).json(err);
-	}
+router.put("/users/:username/categories/:id", async (req, res) => {
+  try {
+    if (await userExists(req.params.username)) {
+      if (await categoryExists(req.params.id)) {
+        if (
+          await categoryOwnedByUser(
+            req.params.id,
+            await getUserIdByUsername(req.params.username)
+          )
+        ) {
+          const updatedCategory = await Category.findByIdAndUpdate(
+            req.params.id,
+            {
+              name: req.body.name,
+            },
+            { new: true }
+          );
+
+          res.status(200).json(updatedCategory);
+        } else {
+          res.status(404).json({ Error: "Category not found." });
+        }
+      } else {
+        res.status(404).json({ Error: "Category not found." });
+      }
+    } else {
+      res.status(404).json({ Error: "User not found." });
+    }
+  } catch (err) {
+    res.status(500).json({ Error: err.message });
+  }
 });
 
 //DELETE
-router.delete("/:id", async (req, res) => {
-	try {
-		if (await categoryExists(req.params.id)) {
-			const category = await Category.findById(req.params.id);
+router.delete("/users/:username/categories/:id", async (req, res) => {
+  try {
+    if (await userExists(req.params.username)) {
+      if (await categoryExists(req.params.id)) {
+        if (
+          await categoryOwnedByUser(
+            req.params.id,
+            await getUserIdByUsername(req.params.username)
+          )
+        ) {
+          await Category.findByIdAndDelete(req.params.id);
+          const tasks = await Task.find({ categories: req.params.id });
 
-			await Category.findByIdAndDelete(req.params.id);
-			const tasks = await Task.find({ categories: category.name });
+          tasks.forEach(async (task) => {
+            const categories = task.categories.filter(
+              (x) => x !== req.params.id
+            );
 
-			tasks.forEach(async (task) => {
-				const categories = task.categories.filter((x) => x !== category.name);
+            await Task.findByIdAndUpdate(
+              task.id,
+              {
+                categories: categories,
+              },
+              { new: true }
+            );
+          });
 
-				await Task.findByIdAndUpdate(
-					task.id,
-					{
-						categories: categories,
-					},
-					{ new: true }
-				);
-			});
-
-			await res.status(200).json("Category has been deleted.");
-		} else {
-			res.status(404).json("Category not found.");
-		}
-	} catch (err) {
-		res.status(500).json(err);
-	}
+          res.status(200).json("Category has been deleted.");
+        } else {
+          res.status(404).json({ Error: "Category not found." });
+        }
+      } else {
+        res.status(404).json({ Error: "Category not found." });
+      }
+    } else {
+      res.status(404).json({ Error: "User not found." });
+    }
+  } catch (err) {
+    res.status(500).json({ Error: err.message });
+  }
 });
 
 //GET
-router.get("/:id", async (req, res) => {
-	try {
-		if (await categoryExists(req.params.id)) {
-			const category = await Category.findById(req.params.id);
-			res.status(200).json(category);
-		} else {
-			res.status(404).json("Category not found.");
-		}
-	} catch (err) {
-		res.status(500).json(err);
-	}
+router.get("/users/:username/categories/:id", async (req, res) => {
+  try {
+    if (await userExists(req.params.username)) {
+      if (await categoryExists(req.params.id)) {
+        if (
+          await categoryOwnedByUser(
+            req.params.id,
+            await getUserIdByUsername(req.params.username)
+          )
+        ) {
+          const category = await Category.findById({ _id: req.params.id });
+          res.status(200).json(category);
+        } else {
+          res.status(404).json({ Error: "Category not found." });
+        }
+      } else {
+        res.status(404).json({ Error: "Category not found." });
+      }
+    } else {
+      res.status(404).json({ Error: "User not found." });
+    }
+  } catch (err) {
+    res.status(500).json({ Error: err.message });
+  }
 });
 
 //GET ALL
-router.get("/", async (req, res) => {
-	try {
-		const categories = await Category.find();
-		if (categories.length === 0) res.status(404).json("No categories found.");
-		else res.status(200).json(categories);
-	} catch (err) {
-		res.status(500).json(err);
-	}
+router.get("/users/:username/categories", async (req, res) => {
+  try {
+    if (await userExists(req.params.username)) {
+      const categories = await Category.find({
+        userId: await getUserIdByUsername(req.params.username),
+      });
+      if (categories.length === 0)
+        res.status(404).json({ Error: "No categories found." });
+      else res.status(200).json(categories);
+    } else {
+      res.status(404).json({ Error: "User not found." });
+    }
+  } catch (err) {
+    res.status(500).json({ Error: err.message });
+  }
 });
 
 module.exports = router;
-
-/*
-//CREATE
-router.post("/", async (req, res) => {
-	try {
-		const newCategory = Category({
-			name: req.body.name,
-			username: req.body.username,
-		});
-
-		const category = await newCategory.save();
-
-		res.status(200).json(category);
-	} catch (err) {
-		res.status(500).json(err);
-	}
-});
-
-//UPDATE
-router.put("/:id", async (req, res) => {
-	try {
-		const updatedCategory = await Category.findByIdAndUpdate(
-			req.params.id,
-			{
-				$set: req.body,
-			},
-			{ new: true }
-		);
-		res.status(200).json(updatedCategory);
-	} catch (err) {
-		res.status(500).json(err);
-	}
-});
-
-//DELETE
-router.delete("/:id", async (req, res) => {
-	try {
-		const categories = await Category.findById(req.params.id);
-		await categories.delete();
-		res.status(200).json("Category has been deleted.");
-	} catch (err) {
-		res.status(500).json(err);
-	}
-});
-
-//GET
-router.get("/:id", async (req, res) => {
-	try {
-		const category = await Category.findById(req.params.id);
-		res.status(200).json(category);
-	} catch (err) {
-		res.status(500).json(err);
-	}
-});
-
-//GET ALL
-router.get("/", async (req, res) => {
-	try {
-		const category = await Category.find();
-		res.status(200).json(category);
-	} catch (err) {
-		res.status(500).json(err);
-	}
-});
-
-module.exports = router;
-*/
