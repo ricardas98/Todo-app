@@ -121,7 +121,7 @@ module.exports = {
           { new: true }
         );
       });
-      res.status(200).json({ Message: "Category has been deleted" });
+      res.sendStatus(204);
     } catch (err) {
       sendErrorMessage(res, err);
     }

@@ -110,7 +110,7 @@ module.exports = {
       //Delete task and all resources related to it
       await Task.findByIdAndDelete({ _id: req.params.id });
       await Comment.deleteMany({ taskId: req.params.id });
-      res.status(200).json({ Message: "Task has been deleted" });
+      res.sendStatus(204);
     } catch (err) {
       sendErrorMessage(res, err);
     }

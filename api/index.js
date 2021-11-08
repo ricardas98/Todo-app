@@ -8,6 +8,8 @@ const categoryRoute = require("./routes/categories");
 const commentRoute = require("./routes/comments");
 const taskRoute = require("./routes/tasks");
 
+const authTokenRoute = require("./routes/authTokens");
+
 dotenv.config();
 app.use(express.json());
 
@@ -20,6 +22,8 @@ app.use("/api/users", userRoute);
 app.use("/api", categoryRoute);
 app.use("/api", commentRoute);
 app.use("/api", taskRoute);
+
+app.use("/api", authTokenRoute);
 
 //Bad json format error handler (400 Bad Request)
 app.use((err, req, res, next) => {

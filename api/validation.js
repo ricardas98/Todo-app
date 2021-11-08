@@ -1,10 +1,25 @@
 const Joi = require("joi");
 
+module.exports.getNewAccessTokenValidation = (data) => {
+  const schema = Joi.object({
+    refreshToken: Joi.string().required(),
+  });
+  return schema.validate(data);
+};
+
 module.exports.createUserValidation = (data) => {
   const schema = Joi.object({
     username: Joi.string().min(3).max(15).required(),
     email: Joi.string().email().required(),
     password: Joi.string().min(6).max(25).required(),
+  });
+  return schema.validate(data);
+};
+
+module.exports.loginUserValidation = (data) => {
+  const schema = Joi.object({
+    email: Joi.string().email().required(),
+    password: Joi.string().required(),
   });
   return schema.validate(data);
 };

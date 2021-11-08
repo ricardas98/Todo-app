@@ -136,7 +136,7 @@ module.exports = {
 
       //Delete comment
       await Comment.findByIdAndDelete({ _id: req.params.id });
-      res.status(200).json({ Message: "Comment has been deleted" });
+      res.sendStatus(204);
     } catch (err) {
       sendErrorMessage(res, err);
     }
@@ -188,7 +188,7 @@ module.exports = {
         userId: await getUserIdByUsername(req.params.username),
         taskId: req.params.taskId,
       });
-      if (comments.length === 0) res.status(404).json("No comments found.");
+      if (comments.length === 0) res.status(404).json({ Error: "No comments found" });
       else res.status(200).json(comments);
     } catch (err) {
       sendErrorMessage(res, err);

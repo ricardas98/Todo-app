@@ -4,6 +4,12 @@ const Comment = require("../models/Comment");
 const Category = require("../models/Category");
 
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+
+const authController = require("./AuthenticationController");
+
+//VALIDATION
+const { createUserValidation, updateUserValidation, loginUserValidation } = require("../validation");
 
 async function userExists(username) {
   return (await User.findOne({ username: username })) ? true : false;
@@ -12,9 +18,6 @@ async function userExists(username) {
 async function emailExists(email) {
   return (await User.findOne({ email: email })) ? true : false;
 }
-
-//VALIDATION
-const { createUserValidation, updateUserValidation } = require("../validation");
 
 module.exports = {
   //-----------------------------------------------------------------------------------------------------------
@@ -45,7 +48,35 @@ module.exports = {
 
       //Save user to database
       const user = await newUser.save();
-      res.status(201).json(user);
+
+      const accessToken = authController.generateAccessToken(user);
+      const refreshToken = await authController.generateRefreshToken(user);
+      res.status(201).json({ accessToken, refreshToken });
+    } catch (err) {
+      res.status(500).json({ Error: err.message });
+    }
+  },
+  //-----------------------------------------------------------------------------------------------------------
+  //LOGIN-----------------------------------------------------------------------------------------------------
+  //-----------------------------------------------------------------------------------------------------------
+  login: async function (req, res) {
+    try {
+      //Validate data
+      const { error } = loginUserValidation(req.body);
+      if (error) return res.status(400).json({ Error: error.details[0].message });
+
+      //Check if email exists in database
+      if (!(await emailExists(req.body.email))) return res.status(400).json({ Error: "Wrong email address or password" });
+
+      //Compare passwords
+      const user = await User.findOne({ email: req.body.email });
+      if (await bcrypt.compare(req.body.password, user.password)) {
+        const accessToken = authController.generateAccessToken(user);
+        const refreshToken = await authController.generateRefreshToken(user);
+        res.status(201).json({ accessToken, refreshToken });
+      } else {
+        return res.status(403).json({ Error: "Wrong email address or password" });
+      }
     } catch (err) {
       res.status(500).json({ Error: err.message });
     }
@@ -98,7 +129,7 @@ module.exports = {
       await Task.deleteMany({ userId: user._id });
       await Comment.deleteMany({ userId: user._id });
 
-      res.status(200).json({ Message: "User has been deleted" });
+      res.sendStatus(204);
     } catch (err) {
       res.status(500).json({ Error: err.message });
     }
@@ -127,7 +158,7 @@ module.exports = {
     //Get all users
     try {
       const users = await User.find();
-      if (users.length === 0) res.status(404).json("No users found");
+      if (users.length === 0) res.status(404).json({ Error: "No users found" });
       else res.status(200).json(users);
     } catch (err) {
       res.status(500).json({ Error: err.message });
