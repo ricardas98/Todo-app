@@ -5,10 +5,11 @@ const jwt = require("jsonwebtoken");
 
 //VALIDATION
 const { getNewAccessTokenValidation } = require("../validation");
+const UsersController = require("./UsersController");
 
 async function getUserIdByUsername(username) {
   const user = await User.findOne({ username: username } /*, "userId"*/);
-  return user.id;
+  return user ? user.id : " ";
 }
 
 async function tokenOwnedByUser(tokenId, userId) {
@@ -21,7 +22,7 @@ async function userExists(username) {
 }
 
 async function tokenExists(value) {
-  return (await AuthToken.find({ value: value })) ? true : false;
+  return (await AuthToken.findOne({ value: value })) ? true : false;
 }
 
 module.exports = {
@@ -29,12 +30,12 @@ module.exports = {
     const authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(" ")[1];
 
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, async (err, user) => {
       //Check if token is valid
       if (err) return res.status(403).json({ Error: "Access denied" });
 
       //Check if user can access the resource
-      if (user.username !== req.params.username) return res.status(403).json({ Error: "Access denied" });
+      if (user.userId !== (await getUserIdByUsername(req.params.username))) return res.status(403).json({ Error: "Access denied" });
 
       next();
     });
@@ -58,12 +59,12 @@ module.exports = {
     const authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(" ")[1];
 
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, async (err, user) => {
       //Check if token is valid
       if (err) return res.status(403).json({ Error: "Access denied" });
 
       //Check if user can access the resource
-      if (user.username !== req.params.username && user.role !== "admin") return res.status(403).json({ Error: "Access denied" });
+      if (user.userId !== (await getUserIdByUsername(req.params.username)) && user.role !== "admin") return res.status(403).json({ Error: "Access denied" });
       next();
     });
   },
@@ -71,7 +72,7 @@ module.exports = {
   generateAccessToken: function (user) {
     //Create user payload for access token
     const userPayload = {
-      username: user.username,
+      userId: user._id,
       role: user.role,
     };
 
@@ -85,7 +86,7 @@ module.exports = {
 
     //Create user payload for refresh token
     const userPayload = {
-      username: user.username,
+      userId: user._id,
       role: user.role,
     };
 
@@ -106,7 +107,7 @@ module.exports = {
       if (error) return res.status(400).json({ Error: error.details[0].message });
 
       //Check if user already has a refresh token in database
-      if (!tokenExists(req.body.refreshToken)) return res.status(404).json({ Error: "Token not found" });
+      if (!(await tokenExists(req.body.refreshToken))) return res.status(404).json({ Error: "Token not found" });
 
       jwt.verify(req.body.refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
         //Check if token is valid
@@ -120,7 +121,7 @@ module.exports = {
       res.status(500).json({ Error: err.message });
     }
   },
-  get: async function (req, res) {
+  getAll: async function (req, res) {
     try {
       //Get all tokens
       const tokens = await AuthToken.find();

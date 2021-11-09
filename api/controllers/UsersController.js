@@ -2,6 +2,7 @@ const User = require("../models/User");
 const Task = require("../models/Task");
 const Comment = require("../models/Comment");
 const Category = require("../models/Category");
+const AuthToken = require("../models/AuthToken");
 
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -108,7 +109,9 @@ module.exports = {
         },
         { new: true }
       );
-      res.status(200).json(updatedUser);
+      let userPayload = updatedUser.toObject();
+      delete userPayload.password;
+      res.status(200).json(userPayload);
     } catch (err) {
       res.status(500).json({ Error: err.message });
     }
@@ -128,6 +131,7 @@ module.exports = {
       await Category.deleteMany({ userId: user._id });
       await Task.deleteMany({ userId: user._id });
       await Comment.deleteMany({ userId: user._id });
+      await AuthToken.deleteOne({ userId: user._id });
 
       res.sendStatus(204);
     } catch (err) {
@@ -144,7 +148,9 @@ module.exports = {
 
     //Get user
     try {
-      const user = await User.findOne({ username: req.params.username });
+      let user = await User.findOne({ username: req.params.username });
+      user = user.toObject();
+      delete user.password;
       res.status(200).json(user);
     } catch (err) {
       res.status(500).json({ Error: err.message });
@@ -159,7 +165,15 @@ module.exports = {
     try {
       const users = await User.find();
       if (users.length === 0) res.status(404).json({ Error: "No users found" });
-      else res.status(200).json(users);
+      else {
+        let usersPayload = [];
+        users.forEach((user) => {
+          user = user.toObject();
+          delete user.password;
+          usersPayload.push(user);
+        });
+        res.status(200).json(usersPayload);
+      }
     } catch (err) {
       res.status(500).json({ Error: err.message });
     }
