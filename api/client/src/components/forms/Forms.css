@@ -1,0 +1,34 @@
+/*COMMENT FORM---------------------------*/
+.commentForm {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.commentFormButton {
+  margin-left: 15px;
+  height: auto;
+}
+
+.commentFormIcon {
+  margin: auto;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.commentFormIcon:hover {
+  color: #e44332;
+}
+
+/*CATGORY FORM---------------------------*/
+.categoryForm {
+  max-width: 500px;
+  width: 80vw;
+}
+
+.simpleForm {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+}

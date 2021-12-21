@@ -1,0 +1,330 @@
+.app {
+  margin: auto;
+  max-width: 1260px;
+}
+
+/**************************************************************************************/
+/*****************************************CARD*****************************************/
+/**************************************************************************************/
+
+.card-l {
+  padding: 50px 100px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+}
+
+.card-s {
+  padding: 10px 20px;
+  margin: 20px 0px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+}
+
+/**************************************************************************************/
+/*****************************************MISC*****************************************/
+/**************************************************************************************/
+
+.mr-10 {
+  margin-right: 10px;
+}
+
+.verticalSpacer {
+  height: 25px;
+}
+
+.solidDivider50-100 {
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  margin: 100px auto;
+  width: 50%;
+}
+
+.solidDivider50-50 {
+  border: none;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  margin: 50px auto;
+  width: 50%;
+}
+
+/**************************************************************************************/
+/*****************************************TEXT*****************************************/
+/**************************************************************************************/
+
+.errorMsg {
+  font-family: "Roboto", sans-serif;
+  font-weight: 200;
+  font-size: 14px;
+  color: red;
+  text-align: left;
+  float: left;
+}
+
+h1 {
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  font-size: 80px;
+  color: #111111;
+  margin-bottom: 0px;
+}
+
+h2 {
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  font-size: 40px;
+  color: #111111;
+  margin-bottom: 0px;
+}
+
+h3 {
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+  color: #111111;
+  line-height: 10px;
+  margin-bottom: 0px;
+}
+
+h4 {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-size: 24px;
+  color: #111111;
+}
+
+h5 {
+  font-family: "Cabin", sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  color: rgba(0, 0, 0, 0.6);
+  line-height: 25px;
+}
+
+h6 {
+  font-family: "Cabin", sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+/**************************************************************************************/
+/****************************************BUTTON****************************************/
+/**************************************************************************************/
+
+.buttonRed {
+  font-family: "Cabin", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  color: #f7f7f7;
+  padding: 10px 20px 10px 20px;
+  background-color: #e44332;
+  border: 1px solid #c6392a;
+  border-radius: 5px;
+}
+
+.buttonRed:hover {
+  background-color: #db3f2e;
+  cursor: pointer;
+}
+
+.buttonGrey {
+  font-family: "Cabin", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  color: #f7f7f7;
+  padding: 10px 20px 10px 20px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(0, 0, 0, 0.35);
+  border-radius: 5px;
+}
+
+.buttonGrey:hover {
+  background-color: rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+}
+
+.buttonTransparent {
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  size: inherit;
+  font-size: inherit;
+}
+
+/**************************************************************************************/
+/*****************************************INPUT****************************************/
+/**************************************************************************************/
+
+.inputCheckBoxList {
+  margin-top: 20px;
+}
+
+.inputCheckBoxItem {
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 1px;
+  border-radius: 5px;
+  margin-top: 5px;
+}
+
+.inputCheckBoxItemContent {
+  margin: 5px 0px;
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 18px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  color: #111111;
+}
+
+.inputCheckBox {
+  outline: none;
+  border: none;
+  height: 20px;
+  width: 20px;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.inputFieldText {
+  font-size: 16px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  border: none;
+  height: 30px;
+  width: 100%;
+  margin: 10px 0px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: inherit;
+}
+
+.inputFieldText:focus {
+  outline: none;
+  border-bottom: 1px solid #e44332;
+}
+
+/**************************************************************************************/
+/*****************************************LINK*****************************************/
+/**************************************************************************************/
+
+.link {
+  text-decoration: none;
+  text-transform: none;
+  color: inherit;
+}
+
+.logoLink {
+  text-decoration: none;
+  text-transform: none;
+  color: inherit;
+}
+
+.link:hover {
+  color: #e44332;
+}
+
+.linkRed {
+  text-decoration: none;
+  text-transform: none;
+  color: #e44332;
+}
+
+/**************************************************************************************/
+/*****************************************LIST*****************************************/
+/**************************************************************************************/
+
+.listItem {
+  width: 100%;
+  margin: auto;
+  padding: 10px 0px;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.listItemContent {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.listItemContentLeft {
+  width: 100%;
+  display: inline;
+  margin: auto;
+  overflow: hidden;
+  flex-wrap: wrap;
+  margin-right: 15px;
+  float: left;
+}
+
+.listItemContentRight {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 0;
+}
+
+.listItemContentText {
+  display: flex;
+  overflow: scroll;
+  flex-wrap: wrap;
+  overflow: scroll;
+  font-family: "Cabin", sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  color: rgba(0, 0, 0, 0.6);
+  line-height: 25px;
+  overflow: hidden;
+}
+
+.listItemContentCaption {
+  font-family: "Cabin", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.25);
+  margin-right: 10px;
+}
+
+.listItemIcon {
+  margin: auto;
+  margin-right: 5px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.listItemIcon:hover {
+  color: #e44332;
+}
+
+.listItemTextEditInput {
+  width: 100%;
+  height: auto;
+  padding: 0px;
+  margin: 0px;
+  border: none;
+  outline: none;
+  background-color: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+  font-size: inherit;
+  color: #e44332;
+  line-height: inherit;
+}
+
+@media only screen and (max-width: 768px) {
+  .buttonRed {
+    font-size: 20px;
+  }
+
+  .buttonGrey {
+    font-size: 20px;
+  }
+
+  h3 {
+    line-height: 26px;
+  }
+  .mr-10 {
+    margin-bottom: 10px;
+  }
+}

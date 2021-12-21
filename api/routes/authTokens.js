@@ -2,7 +2,7 @@ const router = require("express").Router();
 const authController = require("../controllers/AuthenticationController");
 
 //GET NEW ACCESS TOKEN
-router.get("/users/:username/tokens", authController.authAll, async (req, res) => authController.getNewAccessToken(req, res));
+router.post("/users/:username/tokens", authController.authAll, async (req, res) => authController.getNewAccessToken(req, res));
 
 //DELETE
 router.delete("/users/:username/tokens/:value", authController.authAll, async (req, res) => authController.delete(req, res));

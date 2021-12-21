@@ -1,0 +1,53 @@
+.taskInfo {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.taskTitle {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.taskDate {
+  font-family: "Roboto", sans-serif;
+  font-weight: 200;
+  font-size: 14px;
+  color: #e44332;
+}
+
+.taskCategoriesList {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 8px 3px 8px 8px;
+  border-radius: 15px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.taskCategoriesItemIconRight {
+  margin: auto;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.taskCategoriesItemIconLeft {
+  margin: auto;
+  margin-right: 5px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+@media only screen and (max-width: 768px) {
+  .taskInfo {
+    margin-right: 10px;
+  }
+  .taskCategoriesList {
+    flex-wrap: wrap;
+    padding: 8px 3px 8px 8px;
+  }
+}

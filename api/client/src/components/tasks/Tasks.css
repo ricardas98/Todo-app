@@ -1,0 +1,26 @@
+.tasks {
+}
+
+.tasksContent {
+  display: flex;
+}
+
+.tasksList {
+  margin-right: 60px;
+  flex: 3;
+}
+
+.taskForm {
+  flex: 1;
+}
+@media only screen and (max-width: 960px) {
+  .tasksContent {
+    flex-direction: column;
+  }
+
+  .tasksList {
+    margin-right: 0px;
+    flex: 1;
+    margin-bottom: 50px;
+  }
+}

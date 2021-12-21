@@ -68,14 +68,14 @@ module.exports.updateCategoryValidation = (data) => {
 
 module.exports.createCommentValidation = (data) => {
   const schema = Joi.object({
-    text: Joi.string().max(280).required(),
+    text: Joi.string().max(100).required(),
   });
   return schema.validate(data);
 };
 
 module.exports.updateCommentValidation = (data) => {
   const schema = Joi.object({
-    text: Joi.string().max(280).required(),
+    text: Joi.string().max(100).required(),
   });
   return schema.validate(data);
 };

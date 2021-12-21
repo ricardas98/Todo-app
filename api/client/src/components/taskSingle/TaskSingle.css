@@ -1,0 +1,85 @@
+.taskSingle {
+  max-width: 500px;
+  width: 80vw;
+}
+
+.taskSingleHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.taskSingleInfoRight {
+  margin-right: 3px;
+}
+
+.taskSingleInfo {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.taskSingleTitle {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.taskSingleName {
+  margin-bottom: 15px;
+}
+
+.taskSingleCategoriesList {
+  margin-top: 15px;
+  display: flex;
+  width: auto;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.taskSingleCommentList {
+  margin-top: 30px;
+}
+
+.taskNameEditInput {
+  font-family: "Roboto", sans-serif;
+  font-weight: 700;
+  font-size: 28px;
+  color: #111111;
+  line-height: 10px;
+  margin-bottom: 0px;
+
+  height: 32px;
+  padding: 0px;
+  margin: 0px;
+  border: none;
+  outline: none;
+  background-color: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+  font-size: inherit;
+  color: #e44332;
+  line-height: inherit;
+}
+
+.taskDateEditInput {
+  font-size: 16px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  border: none;
+  color: #e44332;
+  height: 30px;
+  margin: 10px 0px;
+  background-color: inherit;
+  outline: none;
+}
+
+.taskDateEditInput:focus {
+  outline: none;
+}

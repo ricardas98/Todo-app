@@ -1,0 +1,36 @@
+.categories {
+  max-width: 500px;
+  width: 80vw;
+}
+
+.categoriesSubtitle {
+  font-family: "Cabin", sans-serif;
+  font-weight: 400;
+  font-size: 20px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.categoriesSelected {
+}
+
+.categoriesSelectedList {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  padding: 15px 20px 20px 20px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.categoriesItem {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin-right: 5px;
+  margin-top: 5px;
+  padding: 5px 7px;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.1);
+}

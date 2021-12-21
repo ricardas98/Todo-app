@@ -1,0 +1,71 @@
+.landingHeader {
+  margin-top: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+}
+
+.landingHeaderContent {
+  display: flex;
+  justify-content: space-evenly;
+  margin: auto;
+  width: 80%;
+}
+
+.landingHeaderTitle {
+  flex: 3;
+  align-self: center;
+}
+
+.landingHeaderSubtitle {
+  margin: 20px 0px;
+}
+
+.landingHeaderImg {
+  max-width: 400px;
+  height: auto;
+  flex: 1;
+  max-width: 800px;
+}
+
+.landingAboutContent {
+  width: 70%;
+  align-self: center;
+  text-align: center;
+}
+
+.landingLogosImg {
+  max-width: 1260px;
+  height: auto;
+  padding: 50px 0px 100px 0px;
+  opacity: 0.25;
+  align-self: center;
+  margin: auto;
+  width: 80%;
+}
+
+@media only screen and (max-width: 768px) {
+  .landingHeaderContent {
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+
+  .landingHeaderImg {
+    width: 300px;
+    height: auto;
+    flex: 1;
+    max-width: 800px;
+  }
+
+  .landingHeaderTitle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .landingLogosImg {
+    width: 100%;
+  }
+}

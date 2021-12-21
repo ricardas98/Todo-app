@@ -1,0 +1,45 @@
+.footer {
+  bottom: 0;
+  width: 100%;
+  z-index: 999;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  height: 80px;
+  background-color: rgba(0, 0, 0, 0.85);
+}
+
+.footerContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: auto;
+  width: 100%;
+  max-width: 1260px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  margin: 0px 40px;
+}
+
+.footerRight {
+  margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.footerRight:first-child {
+  margin-bottom: 15px;
+}
+
+.footerLogo {
+  max-width: 100px;
+  width: 100px;
+}
+
+.footerText {
+  font-family: "Roboto", sans-serif;
+  font-weight: 200;
+  font-size: 14px;
+  line-height: 20px;
+  color: #f7f7f7;
+}

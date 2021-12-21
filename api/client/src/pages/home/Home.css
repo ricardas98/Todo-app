@@ -1,0 +1,36 @@
+.home {
+  min-height: 100vh;
+}
+
+.homeHeader {
+  margin-top: 80px;
+  margin-bottom: 510px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+}
+
+.homeHeaderContent {
+  display: flex;
+  justify-content: space-evenly;
+  margin: auto;
+  width: 80%;
+  align-items: center;
+}
+
+.homeHeaderTitle {
+  flex: 3;
+  align-self: center;
+}
+
+.homeContent {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  margin: 0px 50px;
+}
+
+.homeContentItem {
+  width: 100%;
+}

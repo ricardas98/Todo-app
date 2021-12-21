@@ -77,7 +77,7 @@ module.exports = {
     };
 
     //Create access token
-    return jwt.sign(userPayload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "10m" });
+    return jwt.sign(userPayload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "20m" });
   },
 
   generateRefreshToken: async function (user) {
@@ -109,13 +109,14 @@ module.exports = {
       //Check if user already has a refresh token in database
       if (!(await tokenExists(req.body.refreshToken))) return res.status(404).json({ Error: "Token not found" });
 
-      jwt.verify(req.body.refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+      jwt.verify(req.body.refreshToken, process.env.REFRESH_TOKEN_SECRET, async (err) => {
         //Check if token is valid
         if (err) return res.status(403).json({ Error: "Access denied" });
 
+        const user = await User.findOne({ username: req.params.username });
         //Generate new token
         const accessToken = this.generateAccessToken(user);
-        res.status(200).json({ accessToken });
+        res.status(201).json({ accessToken });
       });
     } catch (err) {
       res.status(500).json({ Error: err.message });
@@ -148,7 +149,8 @@ module.exports = {
       if (!(await userExists(req.params.username))) return res.status(404).json({ Error: "User not found" });
 
       //Check if token is owned by the user
-      if (!(await tokenOwnedByUser(req.params.value, await getUserIdByUsername(req.params.username)))) return res.status(404).json({ Error: "Token not found" });
+      if (!(await tokenOwnedByUser(req.params.value, await getUserIdByUsername(req.params.username))))
+        return res.status(404).json({ Error: "Token not found" });
 
       //Delete token
       await AuthToken.deleteOne({ value: req.params.value });

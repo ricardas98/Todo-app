@@ -52,7 +52,8 @@ module.exports = {
 
       const accessToken = authController.generateAccessToken(user);
       const refreshToken = await authController.generateRefreshToken(user);
-      res.status(201).json({ accessToken, refreshToken });
+      const username = user.username;
+      res.status(201).json({ username, accessToken, refreshToken });
     } catch (err) {
       res.status(500).json({ Error: err.message });
     }
@@ -67,14 +68,15 @@ module.exports = {
       if (error) return res.status(400).json({ Error: error.details[0].message });
 
       //Check if email exists in database
-      if (!(await emailExists(req.body.email))) return res.status(400).json({ Error: "Wrong email address or password" });
+      if (!(await emailExists(req.body.email))) return res.status(403).json({ Error: "Wrong email address or password" });
 
       //Compare passwords
       const user = await User.findOne({ email: req.body.email });
       if (await bcrypt.compare(req.body.password, user.password)) {
         const accessToken = authController.generateAccessToken(user);
         const refreshToken = await authController.generateRefreshToken(user);
-        res.status(201).json({ accessToken, refreshToken });
+        const username = user.username;
+        res.status(201).json({ username, accessToken, refreshToken });
       } else {
         return res.status(403).json({ Error: "Wrong email address or password" });
       }
@@ -111,7 +113,11 @@ module.exports = {
       );
       let userPayload = updatedUser.toObject();
       delete userPayload.password;
-      res.status(200).json(userPayload);
+
+      const accessToken = authController.generateAccessToken(userPayload);
+      const refreshToken = await authController.generateRefreshToken(userPayload);
+
+      res.status(200).json({ userPayload, accessToken, refreshToken });
     } catch (err) {
       res.status(500).json({ Error: err.message });
     }
