@@ -8,4 +8,4 @@ naudosis sistemos naudotojai ir administratorius bei aplikacijų programavimo s�
 Sistema galės naudotis 3 rolių naudotojai, Svečias, galės peržvelgti platformos reprezentacinį puslapį. Administratorius, kuris galės šalinti registruotus naudotojus iš sistemos, kartu su įrašais, kurie susiję su konkrečiu naudotoju. Užsiregistravęs naudotojas galės, valdyti savo sukurtas užduotis, užduočių kategorijas. Taip pat galės kurti sau informatyvius komentarus po užduotimis.
 
 
-[Ataskaita](https://drive.google.com/file/d/1QLSYf021CnmMvL9rw4zl-S-MLBsMgIbB/view?usp=sharing).
+[Ataskaita](https://drive.google.com/file/d/1QLSYf021CnmMvL9rw4zl-S-MLBsMgIbB/view?usp=sharing)
